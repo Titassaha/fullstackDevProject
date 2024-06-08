@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import AWS from 'aws-sdk';
+import awsConfig from '../../aws-config.json'
 
 const Welcome = () => {
   const username = localStorage.getItem("username");
@@ -20,11 +21,7 @@ const Welcome = () => {
 
     setUploading(true);
 
-    AWS.config.update({
-      accessKeyId: 'AKIA2SHE6I3NENPFNDJ5',
-      secretAccessKey: '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',
-      region: 'ap-south-1'
-    });
+    AWS.config.update(awsConfig);
 
     const s3 = new AWS.S3();
 
