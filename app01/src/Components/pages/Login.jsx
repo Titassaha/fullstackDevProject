@@ -1,21 +1,43 @@
 import axios from 'axios';
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const RegAPI = "http://localhost:4000/login"
+    const navigate = useNavigate();
 
-    const handleSubmit = () => {
+    const API = "http://localhost:4000"
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
         const body = {
             username: username,
             password: password
         }
         try {
-            axios.post(RegAPI, body).then(
+            axios.post(API+"/login", body).then(
                 (response) => {
-                    console.log(response);
+                    localStorage.setItem("jwt_token" , response.data.token)
+                    console.log("/login response: ", response);
+
+                    const token = localStorage.getItem("jwt_token")
+
+                    if(response.status == 200) {
+                        axios.get(API+"/welcome",{headers: {
+                            "Authorization" : `Bearer ${token}`
+                        }, 
+                        withCredentials : true}).then((response) => {
+                            if(response.status == 200) {
+                                localStorage.setItem("username", response.data.user.name);
+                                navigate("/welcome");
+                            }
+                            
+                        })
+                        
+                    }
+                    
                 } 
             )
         }

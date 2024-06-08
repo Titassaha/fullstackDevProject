@@ -1,10 +1,13 @@
 
 import axios from 'axios';
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 function Signup() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+
+    const navigate = useNavigate();
 
     const RegAPI = "http://localhost:4000/signup"
 
@@ -34,6 +37,10 @@ function Signup() {
 
                 <button>SignUp</button>
             </form>
+
+            <div className='flex justify-center'>
+            <button onClick={() => {navigate('/login')}}>Login</button>
+            </div>
 
 
         </div>
